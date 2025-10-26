@@ -1,6 +1,15 @@
-# Welcome to your Expo app 👋
+# Pupup Android - React Native Starter App 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a React Native app built with [Expo](https://expo.dev) and [expo-router](https://docs.expo.dev/router/introduction) for navigation.
+
+## Features
+
+- **Home Screen**: Welcome screen with navigation buttons
+- **Explore Screen**: Information about the app structure and features
+- **Modal Screen**: Example modal implementation
+- **Tab Navigation**: Bottom tab navigation with haptic feedback
+- **Themed Components**: Light/dark theme support
+- **TypeScript**: Full TypeScript support
 
 ## Get started
 

@@ -4,7 +4,7 @@
     "slug": "pupup-android",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/pupIcon.png",
     "scheme": "pupupandroid",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -26,6 +26,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Recoleta-Regular.ttf"
+          ]
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
