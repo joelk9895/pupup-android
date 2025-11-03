@@ -9,7 +9,7 @@ interface AuthState {
 }
 
 interface AuthContextType extends AuthState {
-    login: (user: any, token: string) => Promise<void>;
+    login: (user: any, token: string, onboarding: boolean) => Promise<void>;
     logout: () => Promise<void>;
 }
 

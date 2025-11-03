@@ -7,7 +7,7 @@ import { Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "r
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import GoogleIcon from '../icons/googleIcon';
 import PupUpLogo from '../icons/pupupLogo';
-import { RootStackParamList } from './login';
+import { RootStackParamList } from './auth/login';
 
 type NavProp = NativeStackNavigationProp<RootStackParamList, 'Start'>;
 

@@ -1,5 +1,5 @@
 import { APIError, apiPost, LoginResponse } from '@/app/utils/interceptor';
-import { RootStackParamList } from '@/app/views/login';
+import { RootStackParamList } from '@/app/views/auth/login';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useRef, useState } from 'react';
@@ -18,7 +18,7 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 type Props = {
     navigation: NativeStackNavigationProp<RootStackParamList, 'EnterOtp'>;
@@ -85,7 +85,7 @@ export default function EnterOtpScreen({ navigation, route }: Props) {
                     password: generateRandomPassword()
                 });
                 console.log('Sign up successful:', response);
-                await login(response, response.token);
+                await login(response, response.token, response.onboarding_questions !== null);
             } else {
                 console.log('Logging in with email:', email);
                 const response: LoginResponse = await apiPost<LoginResponse>('/user/login', {
@@ -93,7 +93,7 @@ export default function EnterOtpScreen({ navigation, route }: Props) {
                     otp: parseInt(code)
                 });
                 console.log('Login successful:', response);
-                await login(response, response.token);
+                await login(response, response.token, response.onboarding_questions !== null);
             }
         } catch (error: any) {
             console.error('Error verifying OTP:', error);
@@ -102,9 +102,15 @@ export default function EnterOtpScreen({ navigation, route }: Props) {
 
             if (error instanceof APIError) {
                 const status = error.status;
+                console.log('APIError status:', status);
+                console.log('APIError message:', error.message);
 
-                if (status === 400) {
+                if (status === 400 && error.message.includes('invalid code')) {
                     errorMessage = 'Invalid verification code. Please check and try again.';
+                } else if (status === 400 && error.message.includes('Email already exist')) {
+                    errorMessage = 'Email already exists. Please sign in instead.';
+                    navigation.navigate('EnterEmail');
+
                 } else if (status === 401) {
                     errorMessage = 'Incorrect verification code. Please try again.';
                 } else if (status === 404) {

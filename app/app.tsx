@@ -3,15 +3,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useAuth } from './context/AuthContext';
 import { RootStackParamList } from './types/navigation';
+import LoginScreen from './views/auth/login';
 import Home from './views/home';
 import LitterFullScreen from './views/litterFullScreen';
-import LoginScreen from './views/login';
 
 export default function App() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isOnboarding } = useAuth();
     return (
         <NavigationIndependentTree>
-            {isAuthenticated ? <AppNavigation /> : <LoginScreen />}
+            {(isAuthenticated && isOnboarding) ? <AppNavigation /> : <LoginScreen />}
         </NavigationIndependentTree>
     );
 }

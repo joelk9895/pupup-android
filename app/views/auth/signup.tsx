@@ -1,5 +1,5 @@
 import { apiPost } from '@/app/utils/interceptor';
-import { RootStackParamList } from '@/app/views/login';
+import { RootStackParamList } from '@/app/views/auth/login';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import {
