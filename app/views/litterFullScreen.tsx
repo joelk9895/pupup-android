@@ -1,4 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
 import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -17,8 +18,10 @@ import { RootStackParamList } from '../types/navigation';
 
 type LitterFullScreenRouteProp = RouteProp<RootStackParamList, 'LitterFullScreen'>;
 
+type LitterFullScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LitterFullScreen'>;
+
 export default function LitterFullScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<LitterFullScreenNavigationProp>();
     const route = useRoute<LitterFullScreenRouteProp>();
     const { id, name, image_url, video_id, puppies, expected_dogs, slots_filled, created_at } = route.params;
     const videoRef = useRef<Video>(null);
@@ -144,7 +147,7 @@ export default function LitterFullScreen() {
                     <Text style={styles.litterInfo}>
                         {totalPuppies > 0 ? `${bookedPuppies} of ${totalPuppies} puppies booked` : 'Accepting Expression of Interest'}
                     </Text>
-                    <TouchableOpacity style={styles.viewButton}>
+                    <TouchableOpacity style={styles.viewButton} onPress={() => navigation.navigate('Litter', { litterId: id })}>
                         <Text style={styles.viewButtonText}>View Litter</Text>
                     </TouchableOpacity>
                 </View>

@@ -77,23 +77,19 @@ export default function EnterOtpScreen({ navigation, route }: Props) {
 
         try {
             if (name) {
-                console.log('Signing up with email:', email, 'and name:', name);
                 const response: LoginResponse = await apiPost<LoginResponse>('/user/sign_up', {
                     email,
                     otp: parseInt(code),
                     name,
                     password: generateRandomPassword()
                 });
-                console.log('Sign up successful:', response);
-                await login(response, response.token, response.onboarding_questions !== null);
+                await login(response, response.token);
             } else {
-                console.log('Logging in with email:', email);
                 const response: LoginResponse = await apiPost<LoginResponse>('/user/login', {
                     email,
                     otp: parseInt(code)
                 });
-                console.log('Login successful:', response);
-                await login(response, response.token, response.onboarding_questions !== null);
+                await login(response, response.token);
             }
         } catch (error: any) {
             console.error('Error verifying OTP:', error);
@@ -102,8 +98,6 @@ export default function EnterOtpScreen({ navigation, route }: Props) {
 
             if (error instanceof APIError) {
                 const status = error.status;
-                console.log('APIError status:', status);
-                console.log('APIError message:', error.message);
 
                 if (status === 400 && error.message.includes('invalid code')) {
                     errorMessage = 'Invalid verification code. Please check and try again.';
@@ -163,7 +157,6 @@ export default function EnterOtpScreen({ navigation, route }: Props) {
                 [{ text: 'OK', style: 'default' }]
             );
 
-            console.log('OTP resent successfully');
         } catch (error: any) {
             console.error('Error resending OTP:', error);
 
