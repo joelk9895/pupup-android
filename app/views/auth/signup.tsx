@@ -104,7 +104,6 @@ export default function EnterEmailScreenSignup({ navigation }: Props) {
                 email: email.trim().toLowerCase()
             });
 
-            console.log('OTP sent successfully:', response);
             navigation.navigate('EnterOtp', {
                 email: email.trim().toLowerCase(),
                 name: name.trim()

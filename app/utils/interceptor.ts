@@ -35,19 +35,25 @@ export class APIError extends Error {
   }
 }
 
-
 const forceLogoutSubscribers = new Set<() => void>();
 export function onForceLogout(cb: () => void) {
   forceLogoutSubscribers.add(cb);
   return () => forceLogoutSubscribers.delete(cb);
 }
+
 function emitForceLogout() {
+  console.log('Emitting force logout...');
   forceLogoutSubscribers.forEach((cb) => {
     try {
       cb();
     } catch (e) {
       console.warn('forceLogout subscriber error', e);
     }
+  });
+  
+  // Clear auth data immediately
+  AsyncStorage.multiRemove(['auth_token', 'user_data']).catch((error) => {
+    console.warn('Error clearing auth data during force logout:', error);
   });
 }
 
@@ -88,6 +94,7 @@ async function request<T>(
   authToken?: string | null
 ): Promise<T> {
   const token = await getAuthToken(authToken ?? null);
+  console.log(token);
 
   const headers: Record<string, string> = {
     Accept: 'application/json',
@@ -111,12 +118,11 @@ async function request<T>(
 
   const res = await fetch(url, fetchOptions);
 
-  if (res.status === 401) {
-    console.warn('401 - Unauthorized. Emitting forceLogout.');
-    emitForceLogout();
-  }
-
   if (!res.ok) {
+    console.log('Non-OK response received. Status:', res.status);
+    console.log('Unauthorized access - logging out user.');
+    emitForceLogout();
+    
     let parsed: any = null;
     try {
       parsed = await parseJsonSafe<any>(res);
@@ -130,7 +136,7 @@ async function request<T>(
 
     throw new APIError(parsed ? JSON.stringify(parsed) : res.statusText, res.status, parsed);
   }
-
+  
   return parseJsonSafe<T>(res);
 }
 
@@ -146,7 +152,6 @@ export async function apiPut<T>(endpoint: string, body?: Record<string, any>, au
 export async function apiDelete<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
   return request<T>(endpoint, 'DELETE', params ?? null);
 }
-
 
 export async function uploadImage(
   image: { uri: string; name?: string; type?: string },
@@ -173,12 +178,11 @@ export async function uploadImage(
     body: form as any,
   });
 
-  if (res.status === 401) {
-    console.warn('401 - Unauthorized uploading image. Emitting forceLogout.');
-    emitForceLogout();
-  }
-
   if (!res.ok) {
+    console.log('Upload failed. Status:', res.status);
+    console.log('Unauthorized access during upload - logging out user.');
+    emitForceLogout();
+    
     try {
       const parsed = await parseJsonSafe<any>(res);
       if (parsed?.detail) throw new APIError(parsed.detail, res.status, parsed);

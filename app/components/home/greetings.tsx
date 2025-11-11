@@ -1,9 +1,12 @@
 import { useAuth } from '@/app/context/AuthContext';
+import { Button } from '@react-navigation/elements';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Button, Image, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 export default function Greetings() {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
+    const navigation = useNavigation();
 
     return (
         <View style={{ alignSelf: 'stretch', width: '100%', marginTop: 32 }}>
@@ -17,7 +20,14 @@ export default function Greetings() {
                     Browse certified breeders and upcoming litters, check health standards, and chat directly with breeders in-app.
                 </Text>
             </View>
-            <Button title="Get Started" onPress={() => { logout() }} />
+            <Button
+                variant="filled"
+                onPress={() => {
+                    navigation.navigate('ApplicationSuccess' as never);
+                }}
+            >
+                Test Success screen
+            </Button>
         </View>
     );
 }

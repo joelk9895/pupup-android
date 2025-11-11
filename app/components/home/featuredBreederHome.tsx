@@ -1,3 +1,4 @@
+import FavouriteButton from '@/app/components/general/FavouriteButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { memo } from 'react';
 import {
@@ -7,16 +8,12 @@ import {
   Text,
   View
 } from 'react-native';
-import FavouriteButton from '../general/FavoriteButton';
 
 interface Breeder {
   id: number;
   name: string;
   background_img: string;
-  profile_img: string;
-  description: string;
-  location: string;
-  is_featured: boolean;
+  description?: string;
 }
 
 interface FeaturedBreederHomeProps {

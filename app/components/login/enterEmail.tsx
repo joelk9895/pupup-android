@@ -29,7 +29,6 @@ export default function EnterEmailScreen({ navigation }: Props) {
         }
         apiPost('/user/send_login_otp', { email: email.trim() })
             .then((response) => {
-                console.log('OTP sent successfully:', response);
                 navigation.navigate('EnterOtp', { email: email.trim() });
             })
             .catch((error) => {

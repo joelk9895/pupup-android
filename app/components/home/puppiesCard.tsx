@@ -1,20 +1,37 @@
 import GenderIcon from "@/app/icons/genderIcon";
 import { Puppies } from "@/app/types/home";
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { RootStackParamList } from '@/app/types/navigation';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 export default function PuppiesCard({ puppies }: { puppies: Puppies }) {
+    const navigation = useNavigation<NavigationProp>();
+
+    const handlePuppyPress = () => {
+        // Navigate to litter with selected puppy ID
+        navigation.navigate('Litter', {
+            litterId: puppies.litter_id,
+            selectedPuppyId: puppies.id
+        });
+    };
+
     return (
-        <View style={styles.container}>
-            <Image source={{ uri: puppies.image_url }} style={styles.image} />
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 8, paddingVertical: 6 }}>
-                <View style={styles.textContainer}>
-                    <Text style={styles.name}>{puppies.name}</Text>
-                    <Text style={styles.breed}>{puppies.breed}</Text>
+        <TouchableOpacity onPress={handlePuppyPress} activeOpacity={0.8}>
+            <View style={styles.container}>
+                <Image source={{ uri: puppies.image_url }} style={styles.image} />
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 8, paddingVertical: 6 }}>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.name}>{puppies.name}</Text>
+                        <Text style={styles.breed}>{puppies.breed}</Text>
+                    </View>
+                    <GenderIcon gender={puppies.gender} />
                 </View>
-                <GenderIcon gender={puppies.gender} />
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -49,6 +66,4 @@ const styles = StyleSheet.create({
         gap: 2,
         justifyContent: "space-between",
     },
-
-
 });

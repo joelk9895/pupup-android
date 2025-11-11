@@ -64,6 +64,7 @@ export default function StarterScreen() {
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => {
+                    navigation.navigate('EnterEmail');
                 }}>
                     <Text style={styles.signInText}>Sign In</Text>
                 </TouchableOpacity>

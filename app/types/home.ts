@@ -1,7 +1,18 @@
 interface Breed {
   id: number;
   name: string;
+  description: string;
   img_url: string;
+  ai_image_url: string | null;
+  weight: string;
+  health_checkup_ids: number[];
+  care: {
+    Grooming: string;
+    "Health Risks": string;
+    "Nutrition:": string;
+  };
+  size: string;
+  lifespan: string;
 }
 
 interface Litter {
@@ -49,6 +60,7 @@ type Puppies = {
   breed: string;
   image_url: string;
   booked: boolean;
+  litter_id: number;
 }
 
 export { Breed, Breeder, FeaturedLitter, HomeResponse, Litter, Puppies };
